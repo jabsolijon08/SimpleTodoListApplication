@@ -6,4 +6,5 @@
     <string name="alert_title">Task</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="open">Open</string>
 </resources>

@@ -7,8 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,28 +28,26 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<String> mList;
     private ArrayAdapter<String> mAdapter;
-    private TextView mDateTimeTextView;
     private final int ADD_TASK_REQUEST = 1;
     private BroadcastReceiver mTickReceiver;
     private final String PREFS_TASKS = "prefs_tasks";
+    private final String PREFS_TASKS1 = "prefs_tasks1";
     private final String KEY_TASKS_LIST = "list";
+    private final String KEY_TASKS_LIST1 = "list1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // 1
         super.onCreate(savedInstanceState);
-
-        // 2 -Make the activity full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        // 3
         setContentView(R.layout.activity_main);
 
-        // 4
-        mDateTimeTextView = (TextView) findViewById(R.id.dateTimeTextView);
         final Button addTaskBtn = (Button) findViewById(R.id.addTaskBtn);
+        //final Button deleteTaskBtn = (Button) findViewById(R.id.deleteTaskBtn);
+        //final Button updateTaskBtn = (Button) findViewById(R.id.updateTaskBtn);
         final ListView listview = (ListView) findViewById(R.id.taskListview);
+
         mList = new ArrayList<String>();
         String savedList = getSharedPreferences(PREFS_TASKS, MODE_PRIVATE).getString(KEY_TASKS_LIST, null);
         if (savedList != null) {
@@ -67,13 +64,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 taskSelected(i);
+//                Intent intent = new Intent(MainActivity.this,OpenActivity.class);
+//                startActivity(intent);
+                //deleteTaskBtn.setEnabled(true);
+                //updateTaskBtn.setEnabled(true);
             }
         });
         mTickReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
-                    mDateTimeTextView.setText(getCurrentTimeStamp());
+                    //mDateTimeTextView.setText(getCurrentTimeStamp());
                 }
             }
         };
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         // 1
         super.onResume();
         // 2
-        mDateTimeTextView.setText(getCurrentTimeStamp());
+        //mDateTimeTextView.setText(getCurrentTimeStamp());
         // 3
         registerReceiver(mTickReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
@@ -118,7 +119,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, TaskDescriptionActivity.class);
         startActivityForResult(intent, ADD_TASK_REQUEST);
     }
+    public void delTaskClicked(View view){
 
+    }
     private static String getCurrentTimeStamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");//dd/MM/yyyy
         Date now = new Date();
@@ -153,11 +156,18 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         mList.remove(position);
                         mAdapter.notifyDataSetChanged();
+
+//                        Intent intent = new Intent(MainActivity.this,OpenActivity.class);
+//                        startActivity(intent);
+
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
+//                        Intent intent = new Intent(MainActivity.this,OpenActivity.class);
+//                        intent.putExtra("EXTRA_RICE",mList.get(position));
+//                        startActivity(intent);
                     }
                 });
 
